@@ -35,6 +35,20 @@ class Tweet:
             self.error = True
             self.handle = "skip"
 
+        # Added by windsnow1025
+        try:
+            user_elements = card.find_elements(
+                "xpath", './/div[@data-testid="User-Name"]//span'
+            )
+            self.forwarded_user = None
+            for user_element in user_elements:
+                if user_element.text not in [self.user, self.handle, "", "·"]:
+                    self.forwarded_user = user_element.text
+                    break
+        except NoSuchElementException:
+            self.error = True
+            self.forwarded_user = None
+
         try:
             self.date_time = card.find_element("xpath", ".//time").get_attribute(
                 "datetime"
@@ -272,6 +286,7 @@ class Tweet:
             self.user_id,
             self.following_cnt,
             self.followers_cnt,
+            self.forwarded_user,
         )
 
         pass
