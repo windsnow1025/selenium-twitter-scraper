@@ -1,9 +1,9 @@
 import os
 import sys
 import pandas as pd
-from progress import Progress
-from scroller import Scroller
-from tweet import Tweet
+from scraper.progress import Progress
+from scraper.scroller import Scroller
+from scraper.tweet import Tweet
 
 from datetime import datetime
 from fake_headers import Headers

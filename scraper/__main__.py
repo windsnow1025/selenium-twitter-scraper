@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 import getpass
-from twitter_scraper import Twitter_Scraper
+from scraper.twitter_scraper import Twitter_Scraper
 
 try:
     from dotenv import load_dotenv
@@ -15,7 +15,7 @@ except Exception as e:
     sys.exit(1)
 
 
-def main():
+def main(args=None):
     try:
         parser = argparse.ArgumentParser(
             add_help=True,
@@ -93,7 +93,7 @@ def main():
             help="Scrape top tweets",
         )
 
-        args = parser.parse_args()
+        args = parser.parse_args(args if args is not None else sys.argv[1:])
 
         USER_UNAME = args.user
         USER_PASSWORD = args.password
