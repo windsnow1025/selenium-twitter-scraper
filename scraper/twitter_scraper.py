@@ -161,8 +161,7 @@ class Twitter_Scraper:
 
         try:
             self.driver.maximize_window()
-            self.driver.get(TWITTER_LOGIN_URL)
-            sleep(3)
+            self._load_page()
 
             self._input_username()
             self._input_unusual_activity()
@@ -195,6 +194,24 @@ class Twitter_Scraper:
             print(f"Login Failed: {e}")
             sys.exit(1)
 
+        pass
+
+    def _load_page(self, max_attempts=3, max_wait_seconds=5):
+        for _ in range(max_attempts):
+            self.driver.get(TWITTER_LOGIN_URL)
+            sleep(2)
+            for _ in range(max_wait_seconds - 2):
+                if self.driver.find_element("xpath", "//input[@autocomplete='username']"):
+                    break
+                else:
+                    print("Waiting for page to load...")
+                    sleep(1)
+            else:
+                print("Re-attempting to load page...")
+                continue
+            break
+        else:
+            raise ValueError("Page took too long to load")
         pass
 
     def _input_username(self):
