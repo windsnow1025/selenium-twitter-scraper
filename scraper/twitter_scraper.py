@@ -109,7 +109,6 @@ class Twitter_Scraper:
         else:
             self.scraper_details["type"] = "Home"
             self.router = self.go_to_home
-        pass
 
     def _get_driver(self):
         print("Setup WebDriver...")
@@ -153,7 +152,6 @@ class Twitter_Scraper:
             except Exception as e:
                 print(f"Error setting up WebDriver: {e}")
                 sys.exit(1)
-        pass
 
     def login(self):
         print()
@@ -164,7 +162,7 @@ class Twitter_Scraper:
             self._load_page()
 
             self._input_username()
-            self._input_unusual_activity()
+            # self._input_unusual_activity()
             self._input_password()
 
             cookies = self.driver.get_cookies()
@@ -194,8 +192,6 @@ class Twitter_Scraper:
             print(f"Login Failed: {e}")
             sys.exit(1)
 
-        pass
-
     def _load_page(self, max_attempts=3, max_wait_seconds=5):
         for _ in range(max_attempts):
             self.driver.get(TWITTER_LOGIN_URL)
@@ -212,7 +208,6 @@ class Twitter_Scraper:
             break
         else:
             raise ValueError("Page took too long to load")
-        pass
 
     def _input_username(self):
         input_attempt = 0
@@ -296,7 +291,6 @@ It may be due to the following:
     def go_to_home(self):
         self.driver.get("https://twitter.com/home")
         sleep(3)
-        pass
 
     def go_to_profile(self):
         if (
@@ -308,7 +302,6 @@ It may be due to the following:
         else:
             self.driver.get(f"https://twitter.com/{self.scraper_details['username']}")
             sleep(3)
-        pass
 
     def go_to_hashtag(self):
         if (
@@ -324,7 +317,6 @@ It may be due to the following:
 
             self.driver.get(url)
             sleep(3)
-        pass
 
     def go_to_search(self):
         if self.scraper_details["query"] is None or self.scraper_details["query"] == "":
@@ -337,13 +329,11 @@ It may be due to the following:
 
             self.driver.get(url)
             sleep(3)
-        pass
 
     def get_tweet_cards(self):
         self.tweet_cards = self.driver.find_elements(
             "xpath", '//article[@data-testid="tweet" and not(@disabled)]'
         )
-        pass
 
     def remove_hidden_cards(self):
         try:
@@ -357,7 +347,6 @@ It may be due to the following:
                 )
         except Exception as e:
             return
-        pass
 
     def scrape_tweets(
         self,
@@ -488,13 +477,11 @@ It may be due to the following:
         print("")
 
         if len(self.data) >= self.max_tweets:
-            print("Scraping Complete")
+            print("Scraping Complete. Max Tweets Reached")
         else:
-            print("Scraping Incomplete")
+            print("Scraping Complete. No more tweets to scrape")
 
         print("Tweets: {} out of {}\n".format(len(self.data), self.max_tweets))
-
-        pass
 
     def save_to_csv(self):
         print("Saving Tweets to CSV...")
@@ -537,8 +524,6 @@ It may be due to the following:
         df.to_csv(file_path, index=False, encoding="utf-8")
 
         print("CSV Saved: {}".format(file_path))
-
-        pass
 
     def get_tweets(self):
         return self.data
