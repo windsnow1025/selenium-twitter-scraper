@@ -197,9 +197,10 @@ class Twitter_Scraper:
             self.driver.get(TWITTER_LOGIN_URL)
             sleep(2)
             for _ in range(max_wait_seconds - 2):
-                if self.driver.find_element("xpath", "//input[@autocomplete='username']"):
+                try:
+                    self.driver.find_element("xpath", "//input[@autocomplete='username']")
                     break
-                else:
+                except NoSuchElementException:
                     print("Waiting for page to load...")
                     sleep(1)
             else:
