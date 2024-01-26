@@ -192,6 +192,7 @@ class Twitter_Scraper:
             print(f"Login Failed: {e}")
             sys.exit(1)
 
+    # Modified by windsnow1025
     def _load_page(self, max_attempts=3, max_wait_seconds=5):
         for _ in range(max_attempts):
             self.driver.get(TWITTER_LOGIN_URL)

@@ -9,11 +9,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 class Tweet:
     def __init__(
-        self,
-        card: WebDriver,
-        driver: WebDriver,
-        actions: ActionChains,
-        scrape_poster_details=False,
+            self,
+            card: WebDriver,
+            driver: WebDriver,
+            actions: ActionChains,
+            scrape_poster_details=False,
     ) -> None:
         self.card = card
         self.error = False
@@ -188,10 +188,10 @@ class Tweet:
             hover_attempt = 0
 
             while (
-                not ext_hover_card
-                or not ext_user_id
-                or not ext_following
-                or not ext_followers
+                    not ext_hover_card
+                    or not ext_user_id
+                    or not ext_following
+                    or not ext_followers
             ):
                 try:
                     actions.move_to_element(el_name).perform()
