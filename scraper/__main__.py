@@ -154,7 +154,7 @@ def main(args=None):
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
-    sys.exit(1)
+    scraper.driver.quit()
 
 
 if __name__ == "__main__":
