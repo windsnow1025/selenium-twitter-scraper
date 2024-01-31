@@ -15,88 +15,21 @@ except Exception as e:
     sys.exit(1)
 
 
-def main(args=None):
+def main(
+        tweets: int = 50,
+        username: str = None,
+        hashtag: str = None,
+        query: str = None,
+        add: str = "",
+        latest: bool = False,
+        top: bool = False,
+):
     try:
-        parser = argparse.ArgumentParser(
-            add_help=True,
-            usage="python scraper [option] ... [arg] ...",
-            description="Twitter Scraper is a tool that allows you to scrape tweets from twitter without using Twitter's API.",
-        )
+        user = os.environ.get("TWITTER_USERNAME")
+        password = os.environ.get("TWITTER_PASSWORD")
 
-        try:
-            parser.add_argument(
-                "--user",
-                type=str,
-                default=os.getenv("TWITTER_USERNAME"),
-                help="Your Twitter username.",
-            )
-
-            parser.add_argument(
-                "--password",
-                type=str,
-                default=os.getenv("TWITTER_PASSWORD"),
-                help="Your Twitter password.",
-            )
-        except Exception as e:
-            print(f"Error retrieving environment variables: {e}")
-            sys.exit(1)
-
-        parser.add_argument(
-            "-t",
-            "--tweets",
-            type=int,
-            default=50,
-            help="Number of tweets to scrape (default: 50)",
-        )
-
-        parser.add_argument(
-            "-u",
-            "--username",
-            type=str,
-            default=None,
-            help="Twitter username. Scrape tweets from a user's profile.",
-        )
-
-        parser.add_argument(
-            "-ht",
-            "--hashtag",
-            type=str,
-            default=None,
-            help="Twitter hashtag. Scrape tweets from a hashtag.",
-        )
-
-        parser.add_argument(
-            "-q",
-            "--query",
-            type=str,
-            default=None,
-            help="Twitter query or search. Scrape tweets from a query or search.",
-        )
-
-        parser.add_argument(
-            "-a",
-            "--add",
-            type=str,
-            default="",
-            help="Additional data to scrape and save in the .csv file.",
-        )
-
-        parser.add_argument(
-            "--latest",
-            action="store_true",
-            help="Scrape latest tweets",
-        )
-
-        parser.add_argument(
-            "--top",
-            action="store_true",
-            help="Scrape top tweets",
-        )
-
-        args = parser.parse_args(args if args is not None else sys.argv[1:])
-
-        USER_UNAME = args.user
-        USER_PASSWORD = args.password
+        USER_UNAME = user
+        USER_PASSWORD = password
 
         if USER_UNAME is None:
             USER_UNAME = input("Twitter Username: ")
@@ -108,20 +41,20 @@ def main(args=None):
 
         tweet_type_args = []
 
-        if args.username is not None:
-            tweet_type_args.append(args.username)
-        if args.hashtag is not None:
-            tweet_type_args.append(args.hashtag)
-        if args.query is not None:
-            tweet_type_args.append(args.query)
+        if username is not None:
+            tweet_type_args.append(username)
+        if hashtag is not None:
+            tweet_type_args.append(hashtag)
+        if query is not None:
+            tweet_type_args.append(query)
 
-        additional_data: list = args.add.split(",")
+        additional_data: list = add.split(",")
 
         if len(tweet_type_args) > 1:
             print("Please specify only one of --username, --hashtag, or --query.")
             sys.exit(1)
 
-        if args.latest and args.top:
+        if latest and top:
             print("Please specify either --latest or --top. Not both.")
             sys.exit(1)
 
@@ -132,12 +65,12 @@ def main(args=None):
             )
             scraper.login()
             scraper.scrape_tweets(
-                max_tweets=args.tweets,
-                scrape_username=args.username,
-                scrape_hashtag=args.hashtag,
-                scrape_query=args.query,
-                scrape_latest=args.latest,
-                scrape_top=args.top,
+                max_tweets=tweets,
+                scrape_username=username,
+                scrape_hashtag=hashtag,
+                scrape_query=query,
+                scrape_latest=latest,
+                scrape_top=top,
                 scrape_poster_details="pd" in additional_data,
             )
             scraper.save_to_csv()
