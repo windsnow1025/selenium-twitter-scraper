@@ -1,9 +1,20 @@
+import os
+
 import pandas as pd
 
-from scraper.__main__ import main
+from scraper.scraper import main
+from scraper.signin import signin
 
 df = pd.read_csv('data/congress_id_names.csv')
 usernames = df['Username'].tolist()
 
+username = os.environ.get("TWITTER_USERNAME")
+password = os.environ.get("TWITTER_PASSWORD")
+
+scraper = signin(username=username, password=password)
 for username in usernames:
-    main(query=f'(from:@{username}) until:2022-06-09 since:2022-03-01', tweets=9999)
+    main(
+        scraper=scraper,
+        query=f'(from:@{username}) until:2022-06-09 since:2022-03-01',
+        tweets=9999
+    )
