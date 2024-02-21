@@ -25,7 +25,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 TWITTER_LOGIN_URL = "https://twitter.com/i/flow/login"
 
 
-class Twitter_Scraper:
+class TwitterScraper:
     def __init__(
         self,
         username,

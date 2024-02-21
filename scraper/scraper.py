@@ -1,9 +1,9 @@
 import sys
-from scraper.twitter_scraper import Twitter_Scraper
+from scraper.twitter_scraper import TwitterScraper
 
 
-def main(
-        scraper: Twitter_Scraper = None,
+def scrape(
+        scraper: TwitterScraper = None,
         tweets: int = 50,
         username: str = None,
         hashtag: str = None,
@@ -33,3 +33,22 @@ def main(
         scrape_poster_details="pd" in additional_data,
     )
     scraper.save_to_csv()
+
+
+def signin(username, password):
+    if not username or not password:
+        print("Please set your Twitter username and password in the environment variables.")
+        sys.exit(1)
+
+    scraper = TwitterScraper(
+        username=username,
+        password=password,
+    )
+
+    try:
+        scraper.login()
+    except Exception:
+        scraper.driver.close()
+        sys.exit(1)
+
+    return scraper
