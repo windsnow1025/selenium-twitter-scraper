@@ -22,6 +22,11 @@ for filename in tweet_files:
     # Read the CSV file
     tweets = pd.read_csv(file_path)
 
+    # Check if the DataFrame is empty (only header row)
+    if tweets.shape[0] <= 1:  # No data rows
+        os.remove(file_path)  # Delete the file
+        continue  # Skip the rest of the loop
+
     # Perform the conversion
     target_name = tweets['Handle'].iloc[0]
     target_without_at = target_name.replace('@', '')
