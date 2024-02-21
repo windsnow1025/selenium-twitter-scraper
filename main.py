@@ -41,9 +41,12 @@ def main():
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        # Always attempt to process the scraped tweets before closing
         try:
+            # Process the scraped tweets
             process_id()
+            # Remove the scraped tweets
+            for filename in os.listdir('tweets'):
+                os.remove(os.path.join('tweets', filename))
         except Exception as e:
             print(f"Error during processing: {e}")
         scraper.driver.close()
