@@ -154,8 +154,7 @@ class Twitter_Scraper:
                 sys.exit(1)
 
     def login(self):
-        print()
-        print("Logging in to Twitter...")
+        print("\nLogging in to Twitter...")
 
         try:
             self.driver.maximize_window()
@@ -184,13 +183,10 @@ class Twitter_Scraper:
 """
                 )
 
-            print()
-            print("Login Successful")
-            print()
+            print("\nLogin Successful\n")
         except Exception as e:
-            print()
-            print(f"Login Failed: {e}")
-            sys.exit(1)
+            print(f"\nLogin Failed: {e}")
+            raise IOError("Login Failed")
 
     # Modified by windsnow1025
     def _load_page(self, max_attempts=3, max_wait_seconds=5):

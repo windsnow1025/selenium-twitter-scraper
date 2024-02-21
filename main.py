@@ -14,9 +14,12 @@ username = os.environ.get("TWITTER_USERNAME")
 password = os.environ.get("TWITTER_PASSWORD")
 
 scraper = signin(username=username, password=password)
-for username in usernames:
-    main(
-        scraper=scraper,
-        query=f'(from:@{username}) until:2022-06-09 since:2022-03-01',
-        tweets=999
-    )
+try:
+    for username in usernames:
+        main(
+            scraper=scraper,
+            query=f'(from:@{username}) until:2022-06-09 since:2022-03-01',
+            tweets=999
+        )
+except Exception as e:
+    scraper.driver.close()
