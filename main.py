@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
 from process_id import process_id
 
+
 def main():
     # Load environment variables
     load_dotenv()
@@ -17,6 +18,10 @@ def main():
     password = os.environ.get("TWITTER_PASSWORD")
     scraper = signin(username=username, password=password)
 
+    if not scraper:
+        scraper.driver.close()
+        return
+
     # Get a list of already scraped user IDs
     output_folder = "data/congress_tweets"
     if not os.path.exists(output_folder):
@@ -24,7 +29,7 @@ def main():
     already_scraped_ids = [filename.split('_')[0] for filename in os.listdir(output_folder)]
 
     try:
-        for username in usernames:
+        for username in usernames[::-1]:
             # Get the user ID from the username
             user_id = df.loc[df['Username'] == username, 'Id'].values[0]
 
@@ -52,5 +57,5 @@ def main():
         scraper.driver.close()
 
 
-if __name__ == "__main__":
+while True:
     main()

@@ -12,7 +12,6 @@ def scrape(
         latest: bool = False,
         top: bool = False,
 ):
-
     additional_data: list = add.split(",")
 
     if not (username or hashtag or query):
@@ -47,8 +46,8 @@ def signin(username, password):
 
     try:
         scraper.login()
-    except Exception:
+    except:
         scraper.driver.close()
-        sys.exit(1)
+        return None
 
     return scraper
