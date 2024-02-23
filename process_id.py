@@ -52,6 +52,8 @@ def process_id():
         # Save the result to the output directory
         tweets.to_csv(output_filepath, index=False)
 
+    print("Processing complete.")
+
 
 # Call the process_id function to execute the modified behavior
 process_id()

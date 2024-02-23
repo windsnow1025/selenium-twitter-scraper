@@ -7,9 +7,6 @@ from process_id import process_id
 
 
 def main():
-    # Load environment variables
-    load_dotenv()
-
     # Load the ID and usernames mapping
     df = pd.read_csv('data/congress_id_names.csv')
     usernames = df['Username'].tolist()
@@ -55,8 +52,10 @@ def main():
                 os.remove(os.path.join('tweets', filename))
         except Exception as e:
             print(f"Error during processing: {e}")
-        scraper.driver.close()
 
+
+# Load environment variables
+load_dotenv()
 
 while True:
     main()
