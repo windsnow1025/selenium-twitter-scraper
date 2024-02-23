@@ -32,7 +32,13 @@ def process_id():
         # Perform the conversion
         target_name = tweets['Handle'].iloc[0]
         target_without_at = target_name.replace('@', '')
-        user_id = id_names.loc[id_names['Username'] == target_without_at, 'Id'].values[0]
+        filtered_ids = id_names.loc[id_names['Username'] == target_without_at, 'Id']
+
+        if filtered_ids.empty:
+            # If no matching user ID is found, raise an error
+            raise ValueError(f"No matching user ID found for username '{target_without_at}' in file '{filename}'")
+
+        user_id = filtered_ids.values[0]
         tweets['User ID'] = user_id
 
         # Construct the output file path
@@ -47,4 +53,5 @@ def process_id():
         tweets.to_csv(output_filepath, index=False)
 
 
+# Call the process_id function to execute the modified behavior
 process_id()
