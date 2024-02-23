@@ -1,4 +1,5 @@
 import os
+import random
 import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
@@ -19,7 +20,6 @@ def main():
     scraper = signin(username=username, password=password)
 
     if not scraper:
-        scraper.driver.close()
         return
 
     # Get a list of already scraped user IDs
@@ -29,7 +29,8 @@ def main():
     already_scraped_ids = [filename.split('_')[0] for filename in os.listdir(output_folder)]
 
     try:
-        for username in usernames[::-1]:
+        random.shuffle(usernames)
+        for username in usernames:
             # Get the user ID from the username
             user_id = df.loc[df['Username'] == username, 'Id'].values[0]
 
