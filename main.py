@@ -3,7 +3,7 @@ import random
 import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
-from process_id import process_id
+from utils.process_id import process_id
 
 
 def main():
