@@ -4,10 +4,10 @@ import pandas as pd
 
 def process_id():
     # Read the id_names file once, as it will be used multiple times
-    id_names = pd.read_csv('../data/congress_id_names.csv')
+    id_names = pd.read_csv('data/congress_id_names.csv')
 
     # Get the list of all files in the 'tweets' directory
-    tweet_files = os.listdir('../tweets')
+    tweet_files = os.listdir('tweets')
 
     # Define the output folder
     output_folder = "data/congress_tweets"
@@ -19,7 +19,7 @@ def process_id():
     # Iterate over all tweet files
     for filename in tweet_files:
         # Construct the full path of the file
-        file_path = os.path.join('../tweets', filename)
+        file_path = os.path.join('tweets', filename)
 
         # Read the CSV file
         tweets = pd.read_csv(file_path)
