@@ -5,13 +5,11 @@ from dotenv import load_dotenv
 from scraper.scraper import signin, scrape
 
 
-def should_skip_file(df, skip_date_1="2022-03-01", skip_date_2="2022-03-02", max_tweets_skip_date_2=100):
+def should_skip_file(df, skip_date="2022-03-01"):
     if not df.empty:
         last_timestamp_date = pd.to_datetime(df['Timestamp'].iloc[-1]).date()
         total_tweets = df.shape[0]
-        if last_timestamp_date == pd.to_datetime(skip_date_1).date():
-            return True
-        if last_timestamp_date == pd.to_datetime(skip_date_2).date() and total_tweets <= max_tweets_skip_date_2:
+        if last_timestamp_date == pd.to_datetime(skip_date).date():
             return True
     return False
 
