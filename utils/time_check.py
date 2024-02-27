@@ -16,27 +16,8 @@ def should_skip_file(df, skip_date_1="2022-03-01", skip_date_2="2022-03-02", max
     return False
 
 
-def should_delete_file(df, delete_after_date="2022-03-10", min_tweets=100, additional_delete_date="2022-03-20",
-                       min_tweets_additional=50):
-    if not df.empty:
-        last_timestamp_date = pd.to_datetime(df['Timestamp'].iloc[-1]).date()
-        total_tweets = df.shape[0]
-        if last_timestamp_date > pd.to_datetime(delete_after_date).date() and total_tweets >= min_tweets:
-            return True
-        if last_timestamp_date > pd.to_datetime(
-                additional_delete_date).date() and total_tweets >= min_tweets_additional:
-            return True
-    return False
-
-
 def process_file(file_path, current_index, total_files, scraper):
     df = pd.read_csv(file_path)
-
-    if should_delete_file(df):
-        os.remove(file_path)
-        print(
-            f"[{current_index}/{total_files}] Deleted {file_path} due to it having a last timestamp after 2022-03-10 and at least 100 tweets.")
-        return False
 
     if should_skip_file(df):
         print(f"[{current_index}/{total_files}] Skipped {file_path} based on skip conditions.")
