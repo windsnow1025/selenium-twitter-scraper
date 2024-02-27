@@ -1,5 +1,8 @@
 import os
 import pandas as pd
+from dotenv import load_dotenv
+
+from scraper.scraper import signin, scrape
 
 
 def should_skip_file(df, skip_date_1="2022-03-01", skip_date_2="2022-03-02", max_tweets_skip_date_2=100):
@@ -26,7 +29,7 @@ def should_delete_file(df, delete_after_date="2022-03-10", min_tweets=100, addit
     return False
 
 
-def process_file(file_path, current_index, total_files):
+def process_file(file_path, current_index, total_files, scraper):
     df = pd.read_csv(file_path)
 
     if should_delete_file(df):
@@ -39,54 +42,45 @@ def process_file(file_path, current_index, total_files):
         print(f"[{current_index}/{total_files}] Skipped {file_path} based on skip conditions.")
         return False
 
+    # Get the last timestamp from the file
+    last_timestamp = df['Timestamp'].iloc[-1]
+
+    # Scrape the tweets from the last timestamp to 2022-03-01
     user_id = os.path.basename(file_path).split('_')[0]
-    total_timestamps = df.shape[0]
-    print(f"\n[{current_index}/{total_files}] File: {os.path.basename(file_path)}")
-    print(f"User ID: {user_id}")
-    print(f"First Timestamp: {df['Timestamp'].iloc[0]}")
-    print(f"Last Timestamp: {df['Timestamp'].iloc[-1]}")
-    print(f"Total Timestamps: {total_timestamps}")
+    num_tweets = scrape(
+        scraper=scraper,
+        query=f'(from:@{user_id}) until:{last_timestamp} since:2022-03-01',
+        tweets=9999,
+        to_csv=False
+    )
+
+    # If the scraper returns tweets, delete the file
+    if num_tweets > 0:
+        os.remove(file_path)
+        print(f"[{current_index}/{total_files}] Deleted {file_path} due to new tweets found after the last timestamp.")
+        return False
+
+    # If the scraper returns no tweets, keep the file
+    print(f"[{current_index}/{total_files}] Kept {file_path} as no new tweets were found.")
     return True
 
 
-def show_all_timestamps(file_path):
-    df = pd.read_csv(file_path)
-    print(df['Timestamp'] if not df.empty else "No timestamps available.")
-
-
-def delete_file(file_path):
-    os.remove(file_path)
-    print(f"Deleted {file_path}")
-
-
-def display_menu(file_path):
-    while True:
-        print("\nMenu:")
-        print("1. Next file (Default)")
-        print("2. Show all timestamps")
-        print("3. Delete the file")
-        choice = input("Enter your choice (Press Enter for Next file): ")
-
-        if choice == '2':
-            show_all_timestamps(file_path)
-        elif choice == '3':
-            delete_file(file_path)
-            break
-        else:
-            break
-
-
 def main():
+    # Authenticate the scraper session
+    username = os.environ.get("TWITTER_USERNAME")
+    password = os.environ.get("TWITTER_PASSWORD")
+    scraper = signin(username=username, password=password)
+
+    if not scraper:
+        return
+
     directory = "../data/congress_tweets/"
     files = os.listdir(directory)
     total_files = len(files)
     for index, filename in enumerate(files[::-1], start=1):
         file_path = os.path.join(directory, filename)
-        if process_file(file_path, index, total_files):
-            display_menu(file_path)
-            if not os.path.exists(file_path):
-                continue
+        process_file(file_path, index, total_files, scraper)
 
 
-if __name__ == "__main__":
-    main()
+load_dotenv()
+main()
