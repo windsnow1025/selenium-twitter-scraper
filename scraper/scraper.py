@@ -11,16 +11,17 @@ def scrape(
         add: str = "",
         latest: bool = False,
         top: bool = False,
+        to_csv: bool = True
 ):
     additional_data: list = add.split(",")
 
     if not (username or hashtag or query):
-        print("Please specify only one of --username, --hashtag, or --query.")
-        sys.exit(1)
+        print("Please specify only one of username, hashtag, or query.")
+        raise ValueError
 
     if latest and top:
-        print("Please specify either --latest or --top. Not both.")
-        sys.exit(1)
+        print("Please specify either latest or top. Not both.")
+        raise ValueError
 
     scraper.scrape_tweets(
         max_tweets=tweets,
@@ -31,7 +32,11 @@ def scrape(
         scrape_top=top,
         scrape_poster_details="pd" in additional_data,
     )
-    scraper.save_to_csv()
+
+    if to_csv:
+        scraper.save_to_csv()
+
+    return len(scraper.data)
 
 
 def signin(username, password):
