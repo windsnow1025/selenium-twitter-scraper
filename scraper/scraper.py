@@ -36,6 +36,8 @@ def scrape(
     if to_csv:
         scraper.save_to_csv()
 
+    print()
+
     return len(scraper.data)
 
 
