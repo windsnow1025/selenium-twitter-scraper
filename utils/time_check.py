@@ -54,7 +54,7 @@ def process_file(file_path, current_index, total_files, scraper):
     num_tweets = scrape(
         scraper=scraper,
         query=f'(from:@{username}) until:{last_timestamp} since:2022-03-01',
-        tweets=9999,
+        tweets=10,
         to_csv=False
     )
 
