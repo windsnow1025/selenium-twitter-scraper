@@ -45,11 +45,15 @@ def process_file(file_path, current_index, total_files, scraper):
     # Get the last timestamp from the file
     last_timestamp = df['Timestamp'].iloc[-1]
 
-    # Scrape the tweets from the last timestamp to 2022-03-01
+    # Get the user ID and username from the file name
     user_id = os.path.basename(file_path).split('_')[0]
+    id_names = pd.read_csv('../data/congress_id_names.csv')
+    username = id_names.loc[id_names['Id'] == int(user_id), 'Username'].values[0]
+
+    # Scrape the tweets from the last timestamp to 2022-03-01
     num_tweets = scrape(
         scraper=scraper,
-        query=f'(from:@{user_id}) until:{last_timestamp} since:2022-03-01',
+        query=f'(from:@{username}) until:{last_timestamp} since:2022-03-01',
         tweets=9999,
         to_csv=False
     )
