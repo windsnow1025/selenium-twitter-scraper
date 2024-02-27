@@ -4,6 +4,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
 from utils.process_id import process_id
+from utils.remove_identical import remove_identical
 
 
 def main():
@@ -39,7 +40,7 @@ def main():
             scrape(
                 scraper=scraper,
                 query=f'(from:@{username}) until:2022-06-09 since:2022-03-01',
-                tweets=999
+                tweets=9999
             )
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -47,6 +48,8 @@ def main():
         try:
             # Process the scraped tweets
             process_id()
+            # Remove identical timestamps
+            remove_identical()
             # Remove the scraped tweets
             for filename in os.listdir('tweets'):
                 os.remove(os.path.join('tweets', filename))

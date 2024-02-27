@@ -13,24 +13,11 @@ def remove_duplicate_timestamps(file_path):
     df_cleaned.to_csv(file_path, index=False)
 
 
-def main():
-    directory = "../data/congress_tweets/"
-
-    # Ensure the directory exists
-    if not os.path.exists(directory):
-        print("Directory does not exist:", directory)
-        return
-
-    # List all CSV files in the directory
-    files = [f for f in os.listdir(directory) if f.endswith('.csv')]
+def remove_identical():
+    directory = "data/congress_tweets/"
+    files = os.listdir(directory)
 
     # Process each file
     for filename in files:
         file_path = os.path.join(directory, filename)
-        print(f"Processing {filename}...")
         remove_duplicate_timestamps(file_path)
-        print(f"Processed {filename} successfully.")
-
-
-if __name__ == "__main__":
-    main()
