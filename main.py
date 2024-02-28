@@ -3,8 +3,8 @@ import random
 import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
-from utils.process_id import process_id
-from utils.remove_identical import remove_identical
+from utils.csv_transfer import process_id
+from utils.duplication_removal import remove_duplications
 
 
 def main():
@@ -51,7 +51,7 @@ def main():
             # Process the scraped tweets
             process_id()
             # Remove identical timestamps
-            remove_identical()
+            remove_duplications()
             # Remove the scraped tweets
             for filename in os.listdir('data/tweets'):
                 os.remove(os.path.join('data/tweets', filename))

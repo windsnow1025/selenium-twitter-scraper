@@ -52,7 +52,3 @@ def process_id():
             tweets.to_csv(output_filepath, mode='w', header=True, index=False)
 
     print("Processing complete.")
-
-
-if __name__ == "__main__":
-    process_id()

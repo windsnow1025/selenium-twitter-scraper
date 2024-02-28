@@ -13,7 +13,7 @@ def remove_duplicate_timestamps(file_path):
     df_cleaned.to_csv(file_path, index=False)
 
 
-def remove_identical():
+def remove_duplications():
     directory = "data/congress_tweets/"
     files = os.listdir(directory)
 
