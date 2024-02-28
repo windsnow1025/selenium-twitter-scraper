@@ -53,8 +53,8 @@ def main():
             # Remove identical timestamps
             remove_identical()
             # Remove the scraped tweets
-            for filename in os.listdir('tweets'):
-                os.remove(os.path.join('tweets', filename))
+            for filename in os.listdir('data/tweets'):
+                os.remove(os.path.join('data/tweets', filename))
         except Exception as e:
             print(f"Error during processing: {e}")
 

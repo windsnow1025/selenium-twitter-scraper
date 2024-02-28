@@ -473,7 +473,7 @@ It may be due to the following:
     def save_to_csv(self):
         print("Saving Tweets to CSV...")
         now = datetime.now()
-        folder_path = "./tweets/"
+        folder_path = "./data/tweets/"
 
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

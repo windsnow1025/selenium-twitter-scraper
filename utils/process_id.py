@@ -6,9 +6,8 @@ def process_id():
     # Read the id_names file once, as it will be used multiple times
     id_names = pd.read_csv('data/congress_id_names.csv')
 
-    # Get the list of all files in the 'tweets' directory
-    tweet_files = os.listdir('tweets')
-
+    # Get the list of all files in the 'data/tweets' directory
+    tweet_files = os.listdir('data/tweets')
     # Define the output folder
     output_folder = "data/congress_tweets"
 
@@ -19,7 +18,7 @@ def process_id():
     # Iterate over all tweet files
     for filename in tweet_files:
         # Construct the full path of the file
-        file_path = os.path.join('tweets', filename)
+        file_path = os.path.join('data/tweets', filename)
 
         # Read the CSV file
         tweets = pd.read_csv(file_path)
@@ -55,5 +54,5 @@ def process_id():
     print("Processing complete.")
 
 
-# Call the process_id function to execute the modified behavior
-process_id()
+if __name__ == "__main__":
+    process_id()
