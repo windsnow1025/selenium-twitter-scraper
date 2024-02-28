@@ -28,7 +28,7 @@ def process_file(file_path, current_index, total_files, scraper):
 
     # Get the user ID and username from the file name
     user_id = os.path.basename(file_path).split('_')[0]
-    id_names = pd.read_csv('../data/congress_id_names.csv')
+    id_names = pd.read_csv('data/congress_id_names.csv')
     username = id_names.loc[id_names['Id'] == int(user_id), 'Username'].values[0]
 
     # Stage 1: Scrape 10 tweets from the last timestamp to 2022-03-01

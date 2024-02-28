@@ -1,3 +1,3 @@
-from utils.csv_transfer import csv_transfer
+from utils.post_scraping import *
 
-csv_transfer()
+post_scraping()
