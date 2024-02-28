@@ -70,7 +70,7 @@ def main():
     if not scraper:
         return
 
-    directory = "../data/congress_tweets/"
+    directory = "data/congress_tweets/"
     files = os.listdir(directory)
     total_files = len(files)
 
