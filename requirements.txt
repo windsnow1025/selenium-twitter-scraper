@@ -1,6 +1,6 @@
-fake_headers
+fake-headers
 pandas
 python-dotenv
 selenium
-webdriver_manager
+webdriver-manager
 Pyarrow
