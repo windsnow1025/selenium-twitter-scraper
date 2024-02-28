@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def process_id():
+def csv_transfer():
     # Read the id_names file once, as it will be used multiple times
     id_names = pd.read_csv('data/congress_id_names.csv')
 

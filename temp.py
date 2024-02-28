@@ -1,3 +1,3 @@
-from utils.csv_transfer import process_id
+from utils.csv_transfer import csv_transfer
 
-process_id()
+csv_transfer()

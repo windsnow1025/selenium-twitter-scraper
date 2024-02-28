@@ -1,8 +1,11 @@
 import os
+
 import pandas as pd
 from dotenv import load_dotenv
+from datetime import timedelta
 
 from scraper.scraper import signin, scrape
+from utils.post_scraping import post_scraping
 
 
 def should_skip_file(df, skip_date="2022-03-01"):
@@ -28,7 +31,7 @@ def process_file(file_path, current_index, total_files, scraper):
     id_names = pd.read_csv('../data/congress_id_names.csv')
     username = id_names.loc[id_names['Id'] == int(user_id), 'Username'].values[0]
 
-    # Scrape the tweets from the last timestamp to 2022-03-01
+    # Stage 1: Scrape 10 tweets from the last timestamp to 2022-03-01
     num_tweets = scrape(
         scraper=scraper,
         query=f'(from:@{username}) until:{last_timestamp} since:2022-03-01',
@@ -36,11 +39,22 @@ def process_file(file_path, current_index, total_files, scraper):
         to_csv=False
     )
 
-    # If the scraper returns tweets, delete the file
+    # If the scraper returns tweets, proceed to stage 2
     if num_tweets > 0:
-        os.remove(file_path)
-        print(f"[{current_index}/{total_files}] Deleted {file_path} due to new tweets found after the last timestamp.")
-        return False
+        # Subtract one day from the last timestamp
+        previous_day = pd.to_datetime(last_timestamp) + timedelta(days=1)
+        previous_day_str = previous_day.strftime('%Y-%m-%d')
+
+        # Stage 2: Scrape all tweets from the day after the last timestamp to 2022-03-01
+        scrape(
+            scraper=scraper,
+            query=f'(from:@{username}) until:{previous_day_str} since:2022-03-01',
+            tweets=9999,
+        )
+
+        print(
+            f"[{current_index}/{total_files}] Kept {file_path} and appended new tweets found after the last timestamp.")
+        return True
 
     # If the scraper returns no tweets, keep the file
     print(f"[{current_index}/{total_files}] Kept {file_path} as no new tweets were found.")
@@ -59,9 +73,15 @@ def main():
     directory = "../data/congress_tweets/"
     files = os.listdir(directory)
     total_files = len(files)
-    for index, filename in enumerate(files[::-1], start=1):
-        file_path = os.path.join(directory, filename)
-        process_file(file_path, index, total_files, scraper)
+
+    try:
+        for index, filename in enumerate(files[::-1], start=1):
+            file_path = os.path.join(directory, filename)
+            process_file(file_path, index, total_files, scraper)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        post_scraping()
 
 
 load_dotenv()

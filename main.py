@@ -3,8 +3,9 @@ import random
 import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
-from utils.csv_transfer import process_id
+from utils.csv_transfer import csv_transfer
 from utils.duplication_removal import remove_duplications
+from utils.post_scraping import post_scraping
 
 
 def main():
@@ -47,19 +48,9 @@ def main():
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
-        try:
-            # Process the scraped tweets
-            process_id()
-            # Remove identical timestamps
-            remove_duplications()
-            # Remove the scraped tweets
-            for filename in os.listdir('data/tweets'):
-                os.remove(os.path.join('data/tweets', filename))
-        except Exception as e:
-            print(f"Error during processing: {e}")
+        post_scraping()
 
 
-# Load environment variables
 load_dotenv()
 
 while True:
