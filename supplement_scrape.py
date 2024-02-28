@@ -85,4 +85,6 @@ def main():
 
 
 load_dotenv()
-main()
+
+while True:
+    main()
