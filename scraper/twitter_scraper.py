@@ -41,7 +41,6 @@ class TwitterScraper:
         print("Initializing Twitter Scraper...")
         self.username = username
         self.password = password
-        self.interrupted = False
         self.tweet_ids = set()
         self.data = []
         self.tweet_cards = []
@@ -445,13 +444,13 @@ It may be due to the following:
                         continue
 
                 if len(self.data) >= self.max_tweets:
+                    print("\nReached max tweets")
                     break
 
                 if added_tweets == 0:
                     if empty_count >= 5:
                         if refresh_count >= 3:
-                            print()
-                            print("No more tweets to scrape")
+                            print("\nNo more tweets to scrape")
                             break
                         refresh_count += 1
                     empty_count += 1
@@ -464,8 +463,7 @@ It may be due to the following:
                 continue
             except KeyboardInterrupt:
                 print("\nKeyboard Interrupt")
-                self.interrupted = True
-                break
+                raise KeyboardInterrupt
             except Exception as e:
                 print(f"\nError scraping tweets: {e}")
                 break

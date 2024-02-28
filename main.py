@@ -28,7 +28,9 @@ def main():
 
     try:
         random.shuffle(usernames)
-        for username in usernames:
+        for index, username in enumerate(usernames, start=1):
+            print(f"[{index}/{len(usernames)}] {username}")
+
             # Get the user ID from the username
             user_id = df.loc[df['Username'] == username, 'Id'].values[0]
 
