@@ -8,7 +8,6 @@ from scraper.scraper import signin, scrape
 def should_skip_file(df, skip_date="2022-03-01"):
     if not df.empty:
         last_timestamp_date = pd.to_datetime(df['Timestamp'].iloc[-1]).date()
-        total_tweets = df.shape[0]
         if last_timestamp_date == pd.to_datetime(skip_date).date():
             return True
     return False
