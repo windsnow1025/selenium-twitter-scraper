@@ -463,23 +463,14 @@ It may be due to the following:
                 sleep(2)
                 continue
             except KeyboardInterrupt:
-                print("\n")
-                print("Keyboard Interrupt")
+                print("\nKeyboard Interrupt")
                 self.interrupted = True
                 break
             except Exception as e:
-                print("\n")
-                print(f"Error scraping tweets: {e}")
+                print(f"\nError scraping tweets: {e}")
                 break
 
-        print("")
-
-        if len(self.data) >= self.max_tweets:
-            print("Scraping Complete. Max Tweets Reached")
-        else:
-            print("Scraping Complete. No more tweets to scrape")
-
-        print("Tweets: {} out of {}\n".format(len(self.data), self.max_tweets))
+        print("Tweets: {} out of {}".format(len(self.data), self.max_tweets))
 
     def save_to_csv(self):
         print("Saving Tweets to CSV...")
