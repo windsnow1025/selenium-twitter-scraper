@@ -3,8 +3,6 @@ import random
 import pandas as pd
 from dotenv import load_dotenv
 from scraper.scraper import scrape, signin
-from utils.csv_transfer import csv_transfer
-from utils.duplication_removal import remove_duplications
 from utils.post_scraping import post_scraping
 
 
