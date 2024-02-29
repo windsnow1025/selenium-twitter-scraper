@@ -29,11 +29,11 @@ def no_tweets_since_last_timestamp(scraper, username, last_timestamp):
     return True
 
 
-def process_file(file_path, current_index, total_files, scraper):
+def process_file(file_path, scraper):
     df = pd.read_csv(file_path)
 
     if is_last_timestamp_at_start(df):
-        print(f"[{current_index}/{total_files}] Skipped {file_path} as the last timestamp is 2022-03-01.")
+        print(f"Skipped {file_path} as the last timestamp is 2022-03-01.")
         return False
 
     last_timestamp = df['Timestamp'].iloc[-1]
@@ -43,7 +43,7 @@ def process_file(file_path, current_index, total_files, scraper):
     username = id_names.loc[id_names['Id'] == int(user_id), 'Username'].values[0]
 
     if no_tweets_since_last_timestamp(scraper, username, last_timestamp):
-        print(f"[{current_index}/{total_files}] Skipped {file_path} as no new tweets were found.")
+        print(f"Skipped {file_path} as no new tweets were found.")
         return False
 
     previous_day = pd.to_datetime(last_timestamp) + timedelta(days=1)
@@ -55,7 +55,7 @@ def process_file(file_path, current_index, total_files, scraper):
         tweets=9999,
     )
 
-    print(f"[{current_index}/{total_files}] Kept {file_path} and appended new tweets found after the last timestamp.")
+    print(f"Kept {file_path} and appended new tweets found after the last timestamp.")
     return True
 
 
@@ -72,9 +72,10 @@ def main():
     total_files = len(files)
 
     try:
-        for index, filename in enumerate(files[::-1], start=1):
+        for index, filename in enumerate(files, start=1):
+            print(f"[{index}/{total_files}]", end=" ")
             file_path = os.path.join(directory, filename)
-            process_file(file_path, index, total_files, scraper)
+            process_file(file_path, scraper)
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
