@@ -8,8 +8,8 @@ from utils.post_scraping import post_scraping
 
 def main():
     # Load the ID and usernames mapping
-    df = pd.read_csv('data/congress_id_names.csv')
-    usernames = df['Username'].tolist()
+    id_names = pd.read_csv('data/congress_id_names.csv')
+    usernames = id_names['Username'].tolist()
 
     # Authenticate the scraper session
     username = os.environ.get("TWITTER_USERNAME")
@@ -31,7 +31,7 @@ def main():
             print(f"[{index}/{len(usernames)}] {username}")
 
             # Get the user ID from the username
-            user_id = df.loc[df['Username'] == username, 'Id'].values[0]
+            user_id = id_names.loc[id_names['Username'] == username, 'Id'].values[0]
 
             # Check if this user's tweets have already been scraped
             if str(user_id) in already_scraped_ids:
