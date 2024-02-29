@@ -6,7 +6,18 @@ from scraper.scraper import scrape, signin
 from utils.post_scraping import post_scraping
 
 
-def main():
+def get_users_to_scrape(usernames, id_names):
+    # Get a list of already scraped user IDs
+    output_folder = "data/congress_tweets"
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    already_scraped_ids = [filename.split('_')[0] for filename in os.listdir(output_folder)]
+
+    users_to_scrape = [username for username in usernames if str(id_names.loc[id_names['Username'] == username, 'Id'].values[0]) not in already_scraped_ids]
+    return users_to_scrape
+
+
+def main(scrape_new=True):
     # Load the ID and usernames mapping
     id_names = pd.read_csv('data/congress_id_names.csv')
     usernames = id_names['Username'].tolist()
@@ -19,24 +30,13 @@ def main():
     if not scraper:
         return
 
-    # Get a list of already scraped user IDs
-    output_folder = "data/congress_tweets"
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    already_scraped_ids = [filename.split('_')[0] for filename in os.listdir(output_folder)]
+    if scrape_new:
+        usernames = get_users_to_scrape(usernames, id_names)
 
     try:
         random.shuffle(usernames)
         for index, username in enumerate(usernames, start=1):
             print(f"[{index}/{len(usernames)}] {username}")
-
-            # Get the user ID from the username
-            user_id = id_names.loc[id_names['Username'] == username, 'Id'].values[0]
-
-            # Check if this user's tweets have already been scraped
-            if str(user_id) in already_scraped_ids:
-                # continue  # Skip scraping for this user
-                pass  # Continue scraping for this user
 
             # Perform the scraping
             scrape(
@@ -53,4 +53,4 @@ def main():
 load_dotenv()
 
 while True:
-    main()
+    main(scrape_new=False)
