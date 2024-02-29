@@ -35,7 +35,8 @@ def main():
 
             # Check if this user's tweets have already been scraped
             if str(user_id) in already_scraped_ids:
-                continue  # Skip scraping for this user
+                # continue  # Skip scraping for this user
+                pass  # Continue scraping for this user
 
             # Perform the scraping
             scrape(
