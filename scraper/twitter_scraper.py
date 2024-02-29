@@ -463,7 +463,6 @@ It may be due to the following:
                 continue
             except KeyboardInterrupt:
                 print("\nKeyboard Interrupt")
-                raise KeyboardInterrupt
             except Exception as e:
                 print(f"\nError scraping tweets: {e}")
                 break
