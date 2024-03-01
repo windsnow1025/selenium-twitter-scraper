@@ -21,3 +21,5 @@ def remove_duplications():
     for filename in files:
         file_path = os.path.join(directory, filename)
         remove_duplicate_timestamps(file_path)
+
+    print("Duplications removed.")
