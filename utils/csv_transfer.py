@@ -47,8 +47,10 @@ def csv_transfer():
         if os.path.exists(output_filepath):
             # If the file exists, append without writing the header
             tweets.to_csv(output_filepath, mode='a', header=False, index=False)
+            print(f"Appended to {output_filepath}.")
         else:
             # If the file does not exist, create it and write the header
             tweets.to_csv(output_filepath, mode='w', header=True, index=False)
+            print(f"Created {output_filepath}.")
 
     print("Processing complete.")
